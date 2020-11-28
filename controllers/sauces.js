@@ -1,7 +1,7 @@
 const Sauces = require('../models/sauces');
 const fs = require('fs');
 
-///// Création d'une nouvelle sauce
+// Création d'une nouvelle sauce
 exports.createSauce = (req, res, next) => {
   const sauceObject = JSON.parse(req.body.sauce);
   delete sauceObject._id;
@@ -14,7 +14,7 @@ exports.createSauce = (req, res, next) => {
     .catch(error => res.status(400).json({ error }));
 };
 
-///// Lecture d'une sauce avec son Id
+// Lecture d'une sauce avec son Id
 exports.getOneSauce = (req, res, next) => {
   Sauces.findOne({
     _id: req.params.id
@@ -22,7 +22,7 @@ exports.getOneSauce = (req, res, next) => {
   ).catch((error) => { res.status(404).json({ error: error }) });
 };
 
-///// Modification d'une sauce
+// Modification d'une sauce
 exports.modifySauce = (req, res, next) => {
   const sauceObject = req.file ?
     {
@@ -34,7 +34,7 @@ exports.modifySauce = (req, res, next) => {
     .catch(error => res.status(400).json({ error }));
 };
 
-///// Suppression d'une sauce
+// Suppression d'une sauce
 exports.deleteSauce = (req, res, next) => {
   Sauces.findOne({ _id: req.params.id })
     .then(sauce => {
@@ -48,7 +48,7 @@ exports.deleteSauce = (req, res, next) => {
     .catch(error => res.status(500).json({ error }));
 };
 
-///// Affichage de toutes les sauces
+// Affichage de toutes les sauces
 exports.getAllSauce = (req, res, next) => {
   Sauces.find()
     .then((sauce) => { res.status(200).json(sauce); })
@@ -57,14 +57,14 @@ exports.getAllSauce = (req, res, next) => {
 
 exports.like = (req, res, next) => {
   switch (req.body.like) {
-    ///// suppression de la valeur par défaut 0 puis ajoute un like ou dislike
+// suppression de la valeur par défaut 0 puis ajoute un like ou dislike
     case 0:
       Sauces.findOne({ _id: req.params.id })
         .then((sauce) => {
           if (sauce.usersLiked.find(user => user === req.body.userId)) {
             Sauces.updateOne({ _id: req.params.id }, {
-              $inc: { likes: -1 }, ///// incrémente un like
-              $pull: { usersLiked: req.body.userId }, ///// l'opérateur supprime le like
+              $inc: { likes: -1 }, // incrémente un like
+              $pull: { usersLiked: req.body.userId }, // l'opérateur supprime le like
               _id: req.params.id
             })
               .then(() => { res.status(201).json({ message: 'Avis enregistré' }); })
@@ -82,7 +82,7 @@ exports.like = (req, res, next) => {
         })
         .catch((error) => { res.status(404).json({ error: error }); });
       break;
-    ///// si la valeur du like est à 1
+    // si la valeur du like est à 1
     case 1:
       Sauces.updateOne({ _id: req.params.id }, {
         $inc: { likes: 1 },
@@ -92,8 +92,7 @@ exports.like = (req, res, next) => {
         .then(() => { res.status(201).json({ message: 'Like ajouté' }); })
         .catch((error) => { res.status(400).json({ error: error }); });
       break;
-    //likes = -1
-    //uptade the sauce, send message/error
+
     case -1:
       Sauces.updateOne({ _id: req.params.id }, {
         $inc: { dislikes: 1 },

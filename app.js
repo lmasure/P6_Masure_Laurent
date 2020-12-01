@@ -7,7 +7,7 @@ const userRoutes = require('./routes/user');
 const saucesRoutes = require('./routes/sauces');
 const path = require('path');
 const helmet = require("helmet");
-const xss = require('xss-clean')
+const xss = require('xss-clean') //prévient le cross-site scripting (injection de script)
 
 // Connexion à MongoDb et config DOTENV pour masquer les id 
 require('dotenv').config();

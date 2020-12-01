@@ -1,8 +1,8 @@
-///// Création du serveur
+// Création du serveur
 const http = require('http');
 const app = require('./app');
 
-///// Renvoi d'un port valide
+// Renvoi d'un port valide
 const normalizePort = val => {
   const port = parseInt(val, 10);
 
@@ -14,10 +14,11 @@ const normalizePort = val => {
   }
   return false;
 };
+//renvoi un port valide sous forme de chaine ou de numéro
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-///// Recherche les différents erreurs et les gères de manière appropriée
+// Recherche les différents erreurs et les gères de manière appropriée
 const errorHandler = error => {
   if (error.syscall !== 'listen') {
     throw error;
@@ -46,5 +47,5 @@ server.on('listening', () => {
   const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
   console.log('Listening on ' + bind);
 });
-
+//écouteur d'évènements
 server.listen(port);
